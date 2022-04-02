@@ -27,11 +27,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: sa-east-1
       
-      - name: Setup CodeCommit origin
-        run: git remote add codecommit https://git-codecommit.sa-east-1.amazonaws.com/v1/repos/aws-pipeline
-        
+      - name: Setup SSH
+        run: |
+          mkdir .ssh && cd .ssh && echo "$SSH_PRIVATE_KEY" > id_rsa && chmod 600 id_rsa
+          echo "$SSH_CONFIG" > config && chmod 600 config
+          echo "$HOST_KEY" > known_hosts && chmod 600 known_hosts && cd ..
+          
       - name: Push to CodeCommit
-        run: git push codecommit main
-      
-
-
+        run: |
+          git remote add codecommit "$CODECOMMIT_URL"
+          git push codecommit master --force

@@ -42,4 +42,4 @@ jobs:
           CODECOMMIT_URL: ${{ secrets.CODECOMMIT_URL }}
         run: |
           git remote add codecommit "$CODECOMMIT_URL"
-          git push codecommit master --force
+          git push codecommit main --force
